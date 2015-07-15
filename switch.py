@@ -15,10 +15,3 @@ def operatepoint(i2caddress, bank, iopin):
 	__bus__.write_byte_data(i2caddress,bank,iopin)
 	time.sleep(0.1)
 	__bus__.write_byte_data(i2caddress,bank,0)
-	
-
-
-
-
-
-
