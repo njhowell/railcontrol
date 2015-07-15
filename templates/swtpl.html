@@ -52,17 +52,17 @@ $def with (iopin)
     <div class="container theme-showcase" role="main">
 
       <div class="page-header">
+      	<br />
         <h1>Switch things</h1>
       </div>
       <p>
-		<h3>Switched $iopin</h3>
+      	$if iopin:
+			<h3>Switched $iopin</h3>
+		$else:
+			<h3>Switch a relay</h3>
 
 		<a class="btn btn-lg btn-success" href="/sw/1">Switch 1</a>
 		<a class="btn btn-lg btn-danger" href="/sw/2">Switch 2</a>
-        
-		<button type="button" class="btn btn-lg btn-success">Success</button>
-        <button type="button" class="btn btn-lg btn-danger">Danger</button>
-        
       </p>
       
     </div> <!-- /container -->

@@ -21,9 +21,7 @@ class sw:
 
 class hello:
 	def GET(self, name):
-		if not name:
-			name = 'World'
-		return 'Hello, ' + name + '!'
+		return render.swtpl(None)
 
 if __name__ == "__main__":
 	app.run()
