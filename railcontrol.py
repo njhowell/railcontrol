@@ -3,10 +3,9 @@ import switch
 import json
 
 urls = (
-	'/sw/(.*)', 'sw',
 	'/api/open/(\d+)', 'open',
 	'/api/close/(\d+)', 'close',
-	'/(.*)', 'hello'
+	'/(.*)', 'index'
 )
 
 app = web.application(urls, globals())
@@ -18,15 +17,6 @@ try:
 	devpresent = True
 except IOError:
 	devpresent = False
-
-class sw:
-	def GET(self, iopin):
-		if not iopin:
-			iopin = '1'
-		iopinint = int(iopin)
-		if devpresent:
-			switch.operatepoint(0x20,0x12,iopinint)
-		return render.swtpl(iopin)
 
 class open:
 	def GET(self, motorid):
@@ -65,7 +55,7 @@ class close:
 			return json.dumps(pyDict)
 
 
-class hello:
+class index:
 	def GET(self, name):
 		motors = db.select('pointmotors', order='id ASC')
 		return render.swtpl(motors)
