@@ -9,14 +9,19 @@ urls = (
 
 app = web.application(urls, globals())
 render = web.template.render('templates/')
-switch.setupio(1,0x20)
+try:
+	switch.setupio(1,0x20)
+	devpresent = True
+except IOError:
+	devpresent = False
 
 class sw:
 	def GET(self, iopin):
 		if not iopin:
 			iopin = '1'
 		iopinint = int(iopin)
-		switch.operatepoint(0x20,0x12,iopinint)
+		if devpresent:
+			switch.operatepoint(0x20,0x12,iopinint)
 		return render.swtpl(iopin)
 
 class hello:
