@@ -67,7 +67,8 @@ class close:
 
 class hello:
 	def GET(self, name):
-		return render.swtpl(None)
+		motors = db.select('pointmotors', order='id ASC')
+		return render.swtpl(motors)
 
 if __name__ == "__main__":
 	app.run()

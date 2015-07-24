@@ -1,4 +1,4 @@
-$def with (iopin)
+$def with (motors)
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,6 +26,7 @@ $def with (iopin)
   </head>
 
   <body role="document">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -55,24 +56,57 @@ $def with (iopin)
       	<br />
         <h1>Switch things</h1>
       </div>
-      <p>
-      	$if iopin:
-		<h3>Switched $iopin</h3>
-	$else:
-		<h3>Switch a relay</h3>
 
-	<a class="btn btn-lg btn-success" href="/sw/1">Switch 1</a>
-	<a class="btn btn-lg btn-danger" href="/sw/2">Switch 2</a>
-      </p>
-      
+
+      $for motor in motors:
+        <p>
+          <h3>Switch Motor $motor.id</h3>	
+          <button type="button" id="open$motor.id" name="open$motor.id" class="btn btn-lg btn-success">Open</button>
+          <button type="button" id="close$motor.id" name="close$motor.id" class="btn btn-lg btn-danger">Close</button>
+          <div id="motor$motor.id-text" name="motor$motor.id-text" ></div>
+          <script>
+          $$('#open$motor.id').click(function(){
+          
+            $$.ajax({
+              url: '/api/open/$motor.id',
+              data: {
+                format: 'json'
+              },
+              dataType: 'json',
+              type: 'GET',
+              success: function(data){
+                
+                $$('#motor$motor.id-text').html(data.state);
+              }
+            });
+          });
+
+          $$('#close$motor.id').click(function(){
+          
+            $$.ajax({
+              url: '/api/close/$motor.id',
+              data: {
+                format: 'json'
+              },
+              dataType: 'json',
+              type: 'GET',
+              success: function(data){
+                $$('#motor$motor.id-text').html(data.state);
+              }
+            });
+          });
+          
+          </script>
+        </P>       
     </div> <!-- /container -->
 
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    
     <script src="/static/js/bootstrap.min.js"></script>
+    
   </body>
 </html>
 
