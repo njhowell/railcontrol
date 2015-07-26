@@ -1,4 +1,4 @@
-$def with (iopin)
+$def with (motors)
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,9 +23,43 @@ $def with (iopin)
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+    #img_container {
+      position:relative;
+      display:inline-block;
+      text-align:center;
+      border:1px solid red;
+      
+    }
+
+    #open1 {
+        position:absolute;
+        bottom:430px;
+        left:1150px;
+        width:10px;
+        height:10px;
+    }
+
+    #close1 {
+        position:absolute;
+        bottom:465px;
+        left:1150px;
+        width:10px;
+        height:10px;
+    }
+
+    #toggle1 {
+        position:absolute;
+        bottom:370px;
+        left:1040px;
+        width:40px;
+        height:40px;
+    }
+  </style>
   </head>
 
   <body role="document">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -55,24 +89,61 @@ $def with (iopin)
       	<br />
         <h1>Switch things</h1>
       </div>
-      <p>
-      	$if iopin:
-		<h3>Switched $iopin</h3>
-	$else:
-		<h3>Switch a relay</h3>
 
-	<a class="btn btn-lg btn-success" href="/sw/1">Switch 1</a>
-	<a class="btn btn-lg btn-danger" href="/sw/2">Switch 2</a>
-      </p>
-      
+
+     
     </div> <!-- /container -->
 
+
+    <div id="img_container">
+      <img src="/static/img/track_layout.jpg" />
+       $for motor in motors:
+        $if motor.currentstate == "open":
+          $ opencolor = "#5cb85c"
+          $ closecolor = "#d9534f"
+        $else:
+          $ closecolor = "#5cb85c"
+          $ opencolor = "#d9534f"
+        <p>
+          <button type="button" id="toggle$motor.id" name="toggle$motor.id" class="btn btn-lg"></button>
+          <div class="btn btn-lg" id="open$motor.id" name="open$motor.id" style="background-color: $opencolor"></div>
+          <div class="btn btn-lg" id="close$motor.id" name="close$motor.id" style="background-color: $closecolor"></div>
+          <script>
+          $$('#toggle$motor.id').click(function(){
+          
+            $$.ajax({
+              url: '/api/toggle/$motor.id',
+              data: {
+                format: 'json'
+              },
+              dataType: 'json',
+              type: 'GET',
+              success: function(data){
+                if(data.state == 'open'){
+                  $$('#open$motor.id').css("background-color", "#5cb85c")
+                  $$('#close$motor.id').css("background-color", "#d9534f")  
+                }
+                else
+                {
+                  $$('#close$motor.id').css("background-color", "#5cb85c")
+                  $$('#open$motor.id').css("background-color", "#d9534f")   
+                }
+                
+              }
+            });
+          });         
+          
+          </script>
+        </P>       
+
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    
     <script src="/static/js/bootstrap.min.js"></script>
+    
   </body>
 </html>
 
